@@ -1,8 +1,31 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:pet_app/pages/signup.page.dart';
+import 'package:http/http.dart' as http;
 
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
 
-class LoginPage extends StatelessWidget {
+class _LoginPageState extends State<LoginPage> {
+  final _userController = new TextEditingController();
+
+  final _passwordController = new TextEditingController();
+
+  String data;
+
+  Future<String> postLogin() async{
+    var response = await http.post(
+      Uri.encodeFull("https://secompuem.com/pet/api/Usuarios/login/"),
+      body: {"username": _userController.text, "password": _passwordController.text}
+    );
+    data = response.body;
+    print(data);
+    return data[1].toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,8 +43,10 @@ class LoginPage extends StatelessWidget {
               height: 40,
             ),
             TextFormField(
-              // autofocus: true,
+              autofocus: true,
               keyboardType: TextInputType.emailAddress,
+              cursorColor: Colors.white,
+              controller: _userController,
               decoration: InputDecoration(
                 labelText: "E-mail ou username",
                 labelStyle: TextStyle(
@@ -30,15 +55,19 @@ class LoginPage extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+              ),
             ),
             SizedBox(
               height: 10,
             ),
             TextFormField(
-              // autofocus: true,
               keyboardType: TextInputType.text,
               obscureText: true,
+              cursorColor: Colors.white,
+              controller: _passwordController,
               decoration: InputDecoration(
                 labelText: "Senha",
                 labelStyle: TextStyle(
@@ -47,7 +76,10 @@ class LoginPage extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(
+                fontSize: 20, 
+                color: Colors.white,
+              ),
             ),
             Container(
               height: 40,
@@ -56,6 +88,7 @@ class LoginPage extends StatelessWidget {
                 child: Text(
                   "Recuperar Senha",
                   textAlign: TextAlign.right,
+                  style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () {
                   Navigator.push(
@@ -101,12 +134,13 @@ class LoginPage extends StatelessWidget {
                     ],
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => build(context),
-                      ),
-                    );
+                    print(postLogin());
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => build(context),
+                    //   ),
+                    // );
                   },
                 ),
               ),

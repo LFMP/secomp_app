@@ -13,7 +13,7 @@ class SignupPage extends StatelessWidget {
               height: 60,
             ),
             TextFormField(
-              // autofocus: true,
+              autofocus: true,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 labelText: "Nome completo",
