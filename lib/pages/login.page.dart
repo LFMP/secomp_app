@@ -14,16 +14,14 @@ class _LoginPageState extends State<LoginPage> {
 
   final _passwordController = new TextEditingController();
 
-  String data;
-
-  Future<String> postLogin() async{
+  Future<Map<String, dynamic>> postLogin() async{
     var response = await http.post(
       Uri.encodeFull("https://secompuem.com/pet/api/Usuarios/login/"),
       body: {"username": _userController.text, "password": _passwordController.text}
     );
-    data = response.body;
+    var data = jsonDecode(response.body);
     print(data);
-    return data[1].toString();
+    return data;
   }
 
   @override
@@ -134,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   onPressed: () {
-                    print(postLogin());
+                    postLogin();
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(
