@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:meta/meta.dart';
 // Exports
 export 'package:pet_app/blocs/events/auth.dart';
 export 'package:pet_app/blocs/states/auth.dart';
@@ -17,6 +16,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   @override
   AuthState get initialState => AuthUninitialized();
+
+  String get token => currentState is AuthAuthenticated ? (currentState as AuthAuthenticated).response.token : '';
 
   @override
   Stream<AuthState> mapEventToState(

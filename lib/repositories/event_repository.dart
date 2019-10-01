@@ -1,39 +1,38 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/cupertino.dart'; // For debug only
 // Foreign
 import 'package:http/http.dart' as http;
 // Repositories
 import 'package:pet_app/repositories/repository.dart';
 // Models
-import 'package:pet_app/models/authorization.dart';
 import 'package:pet_app/models/api_response.dart';
+import 'package:pet_app/models/event.dart';
 
-class AuthRepository extends Repository{
+class EventRepository extends Repository{
   
-  static Future<APIResponse> login(AuthRequest request) async{
+  static Future<APIResponse> fetchEvents(String token) async{
      try{
-      final response = await http.post(
-        Repository.API_USUARIOS_LOGIN,
-        body: request.toJson()
+      final response = await http.get(
+        Repository.API_EVENTOS,
+        headers: {HttpHeaders.authorizationHeader: token},
       );
 
       final body = json.decode(response?.body) ?? null;
-      print(body);
-
-      final result = AuthResponse.fromJson(body);
-      result.setStatusCode = response.statusCode;
 
       if (response.statusCode == 200) {
-        print('[Login sucessfull]');
+        final result = ListEventModel.fromJson(body);
+        result.setStatusCode = response.statusCode;
+        print('[Fetch Event from API]');
         return result;
       }else{
-        print('[Login failed]');
+        print('[Fetch Event Failed]');
         return APIError.fromJson(body);
       }
     }catch(e){
       print(e);
       debugPrintStack();
-      return APIError(message: e.toString());
+      return APIError(message: e.toString());      
     }
   }
 

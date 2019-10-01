@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // Bloc
 import 'package:pet_app/blocs/auth.dart';
-import 'package:pet_app/models/authorization.dart';
+import 'package:pet_app/blocs/event.dart';
+// Pages
+import 'package:pet_app/pages/events_page.dart';
 // Utils
 import 'package:pet_app/utils/slider.dart';
 import 'package:pet_app/utils/snack_bar.dart';
 // Widgets
 import 'package:pet_app/widgets/commons/loading_widget.dart';
+// Models
+import 'package:pet_app/models/authorization.dart';
 
 class LoginPage extends StatelessWidget {
 
@@ -40,19 +44,19 @@ class LoginPage extends StatelessWidget {
         }
 
         if (state is AuthAuthenticated) {
-          SimpleSnackBar.showSnackBar(
-            context,
-            state.response.token,
-            color: Colors.green
-          );
-          // Navigator.of(context).pushAndRemoveUntil(
-          //     SlideRoute(
-          //         page: BlocProvider<PerfilBloc>(
-          //           builder: (context) => BlocProvider.of<PerfilBloc>(context),
-          //           child: PerfilPage(),
-          //         ),
-          //         direction: SlideDirection.BOTTOM_TOP),
-          //     (_) => false);
+          // SimpleSnackBar.showSnackBar(
+          //   context,
+          //   state.response.token,
+          //   color: Colors.green
+          // );
+          Navigator.of(context).pushAndRemoveUntil(
+              SlideRoute(
+                  page: BlocProvider<EventBloc>(
+                    builder: (context) => BlocProvider.of<EventBloc>(context),
+                    child: EventsPage(),
+                  ),
+                  direction: SlideDirection.BOTTOM_TOP),
+              (_) => false);
         }
       },
       child: BlocBuilder(
