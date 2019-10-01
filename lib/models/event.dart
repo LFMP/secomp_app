@@ -1,5 +1,6 @@
 
 import 'package:pet_app/models/api_response.dart';
+import 'package:pet_app/utils/date.dart';
 
 class EventModel{
     String nome;
@@ -33,6 +34,9 @@ class EventModel{
         this.mensagemPagamento,
         this.id,
     });
+
+    String get description => 
+      '${DateFormatter.simpleFormat(dataInicio)} à ${DateFormatter.simpleFormat(dataFim)}';
 
     factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
         nome: json["nome"] == null ? null : json["nome"],

@@ -24,6 +24,8 @@ dependencies:
   bloc: any
   http: any
   flushbar: any
+  liquid_pull_to_refresh: any
+  intl: any
   
 
   # The following adds the Cupertino Icons font to your application.

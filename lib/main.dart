@@ -6,6 +6,7 @@ import 'package:pet_app/pages/login_page.dart';
 // Bloc 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pet_app/utils/style.dart';
 
 class SimpleBlocDelegate extends BlocDelegate {
   @override
@@ -54,7 +55,7 @@ class App extends StatelessWidget {
       title: 'PET-Informática',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: AppStyle.colorBritishRacingGreen
       ),
       home: LoginPage(),
     );

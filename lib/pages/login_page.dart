@@ -8,6 +8,7 @@ import 'package:pet_app/pages/events_page.dart';
 // Utils
 import 'package:pet_app/utils/slider.dart';
 import 'package:pet_app/utils/snack_bar.dart';
+import 'package:pet_app/utils/style.dart';
 // Widgets
 import 'package:pet_app/widgets/commons/loading_widget.dart';
 // Models
@@ -27,8 +28,11 @@ class LoginPage extends StatelessWidget {
     void _sendLogin() => _authBloc.dispatch(
       AuthLogin(
         request: AuthRequest(
-          username: _userController.text,
-          password: _passController.text
+          username: 'petMaster'
+          //_userController.text
+          ,
+          password: 'teste'
+          // _passController.text
         )
       )
     );
@@ -68,7 +72,7 @@ class LoginPage extends StatelessWidget {
               height: 60,
               alignment: Alignment.centerLeft,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppStyle.colorWhite,
                 borderRadius: BorderRadius.all(Radius.circular(60),),
               ),
               child: SizedBox.expand(
@@ -102,7 +106,7 @@ class LoginPage extends StatelessWidget {
           return Scaffold(
             body: Container(
               padding: EdgeInsets.only(top: 60, left: 40, right: 40),
-              color: Colors.blue,
+              color: AppStyle.colorBritishRacingGreen,
               child: ListView(
                 children: <Widget>[
                   SizedBox(
@@ -120,12 +124,15 @@ class LoginPage extends StatelessWidget {
                     decoration: InputDecoration(
                       labelText: "E-mail ou username",
                       labelStyle: TextStyle(
-                        color: Colors.white,
+                        color: AppStyle.colorWhite,
                         fontWeight: FontWeight.w400,
                         fontSize: 20,
                       ),
                     ),
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: AppStyle.colorWhite
+                    ),
                   ),
                   SizedBox(
                     height: 10,
@@ -138,12 +145,15 @@ class LoginPage extends StatelessWidget {
                     decoration: InputDecoration(
                       labelText: "Senha",
                       labelStyle: TextStyle(
-                        color: Colors.white,
+                        color: AppStyle.colorWhite,
                         fontWeight: FontWeight.w400,
                         fontSize: 20,
                       ),
                     ),
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: AppStyle.colorWhite
+                    ),
                   ),
                   SizedBox(
                     height: 40,

@@ -1,13 +1,14 @@
 import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 // Bloc
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/blocs/event.dart';
-import 'package:pet_app/widgets/commons/loading_widget.dart';
+// Utils
+import 'package:pet_app/utils/style.dart';
 // Model
 import 'package:pet_app/models/event.dart';
+// Foreign
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class EventsPage extends StatefulWidget{
 
@@ -15,39 +16,53 @@ class EventsPage extends StatefulWidget{
 }
 
 class _EventsPageState extends State<EventsPage>{
+  // final _refreshController = RefreshController(initialRefresh: false);
+
+  Future<void> _onRefresh(EventBloc _bloc) async{
+    _bloc.dispatch(EventLoad());    
+  }
+
   
   @override
   Widget build(BuildContext context) {
     final EventBloc _eventBloc = BlocProvider.of<EventBloc>(context);
 
-    return BlocListener(
+    return BlocBuilder(
       bloc: _eventBloc,
-      listener: (context, state) async{
+      builder: (context, state){
+        if (state is EventEmpty)
+          _eventBloc.dispatch(EventLoad());
+
+        final _events = state is EventLoading ? [] : state.events;
         
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Eventos'),
+          ),
+          body: LiquidPullToRefresh(
+            onRefresh: () => _onRefresh(_eventBloc),	
+            showChildOpacityTransition: false,
+            height: AppStyle.pullHeight,
+            color: AppStyle.colorPigmentGreen,
+            child: ListView.builder(
+              itemCount: _events.length,
+              itemBuilder: (context, index) => Card(
+                child: ListTile(
+                  leading: Image.memory(base64Decode(_events[index].foto)),
+                  title: Text(
+                    _events[index].nome,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(
+                    _events[index].description
+                  ),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                ),
+              )
+            ),
+          )
+        );
       },
-      child: BlocBuilder(
-        bloc: _eventBloc,
-        builder: (context, state){
-          if (state is EventEmpty)
-            _eventBloc.dispatch(EventLoad());
-
-          final _child = state is EventLoading ? LoadingWidget() : 
-          ListView.builder(
-            itemCount: state.events.length,
-            itemBuilder: (context, index) => ListTile(
-              leading: Image.memory(base64Decode(state.events[index].foto)),
-              title: Text(state.events[index].nome),
-            ),
-          );
-
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Eventos'),
-            ),
-            body: _child,
-          );
-        },
-      ),
     );
   }
 
