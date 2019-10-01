@@ -52,7 +52,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'PET-Informática',
+      title: 'SECOMP',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: AppStyle.colorBritishRacingGreen

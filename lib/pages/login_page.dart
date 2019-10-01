@@ -77,26 +77,15 @@ class LoginPage extends StatelessWidget {
               ),
               child: SizedBox.expand(
                 child: FlatButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        "Login",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                        textAlign: TextAlign.left,
+                  child: Container(
+                    child: Text(
+                      "Login",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: AppStyle.colorBritishRacingGreen
                       ),
-                      Container(
-                        child: SizedBox(
-                          child: Image.asset("assets/lambda_transparent.png"),
-                          height: 28,
-                          width: 28,
-                        ),
-                      )
-                    ],
+                    ),
                   ),
                   onPressed: () => _sendLogin()
                 )
@@ -112,7 +101,7 @@ class LoginPage extends StatelessWidget {
                   SizedBox(
                     width: 128,
                     height: 128,
-                    child: Image.asset("assets/logoPetBranco.png"),
+                    child: Image.asset("assets/logoSecomp.png"),
                   ),
                   SizedBox(
                     height: 40,

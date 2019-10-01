@@ -43,7 +43,7 @@ class _EventsPageState extends State<EventsPage>{
             onRefresh: () => _onRefresh(_eventBloc),	
             showChildOpacityTransition: false,
             height: AppStyle.pullHeight,
-            color: AppStyle.colorPigmentGreen,
+            color: AppStyle.colorBritishRacingGreen,
             child: ListView.builder(
               itemCount: _events.length,
               itemBuilder: (context, index) => Card(
@@ -57,6 +57,7 @@ class _EventsPageState extends State<EventsPage>{
                     _events[index].description
                   ),
                   trailing: Icon(Icons.keyboard_arrow_right),
+                  onTap: () => print('ok'),
                 ),
               )
             ),
