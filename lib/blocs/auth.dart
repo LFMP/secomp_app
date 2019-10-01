@@ -1,0 +1,56 @@
+import 'dart:async';
+import 'package:meta/meta.dart';
+// Exports
+export 'package:pet_app/blocs/events/auth.dart';
+export 'package:pet_app/blocs/states/auth.dart';
+// Bloc
+import 'package:bloc/bloc.dart';
+import 'package:pet_app/blocs/events/auth.dart';
+import 'package:pet_app/blocs/states/auth.dart';
+import 'package:pet_app/models/api_response.dart';
+import 'package:pet_app/models/authorization.dart';
+import 'package:pet_app/repositories/auth_repository.dart';
+
+class AuthBloc extends Bloc<AuthEvent, AuthState> {
+
+  AuthBloc();
+
+  @override
+  AuthState get initialState => AuthUninitialized();
+
+  @override
+  Stream<AuthState> mapEventToState(
+    AuthEvent event,
+  ) async* {
+
+    if (event is AuthAppStarted) {
+
+      // TODO: Check if haas token saved
+      yield AuthUninitialized();
+
+      // await Future.delayed(Duration(seconds: 2));
+      // final bool hasToken = await userRepository.hasToken();
+
+      // if (hasToken) {
+      //   yield AuthAuthenticated();
+      // } else {
+      //   yield AuthUnauthenticated();
+      // }
+    }
+
+    if (event is AuthLogin) {
+      yield AuthLoading();
+      final r = await AuthRepository.login(event.request);
+      if (r.isSucessfull)
+        yield AuthAuthenticated(response: r as AuthResponse);
+      else
+        yield AuthUnauthenticated(error: r as APIError);
+    }
+
+    if (event is AuthLogout) {
+      // yield AuthLoading();
+      // await userRepository.deleteToken();
+      yield AuthUnauthenticated();
+    }
+  }
+}

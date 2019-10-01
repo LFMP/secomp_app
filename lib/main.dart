@@ -1,7 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:pet_app/blocs/auth.dart';
+// Pages
 import 'package:pet_app/pages/login.page.dart';
+// Bloc 
+import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() => runApp(App());
+class SimpleBlocDelegate extends BlocDelegate {
+  @override
+  void onEvent(Bloc bloc, Object event) {
+    super.onEvent(bloc, event);
+    print(event);
+  }
+
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    super.onTransition(bloc, transition);
+    print(transition);
+  }
+
+  @override
+  void onError(Bloc bloc, Object error, StackTrace stacktrace) {
+    super.onError(bloc, error, stacktrace);
+    print(error);
+  }
+}
+
+void main() {
+  BlocSupervisor.delegate = SimpleBlocDelegate();
+  final authBloc = AuthBloc()..dispatch(AuthAppStarted());
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(
+          builder: (context) => authBloc,
+        )
+      ],
+      child: App()
+    )
+  );
+}
 
 class App extends StatelessWidget {
   // This widget is the root of your application.
