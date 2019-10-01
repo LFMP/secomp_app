@@ -2,7 +2,7 @@
 import 'package:pet_app/models/api_response.dart';
 import 'package:pet_app/utils/date.dart';
 
-class EventModel{
+class EventoModel{
     String nome;
     DateTime anoEvento;
     String descricao;
@@ -18,7 +18,7 @@ class EventModel{
     String mensagemPagamento;
     int id;
 
-    EventModel({
+    EventoModel({
         this.nome,
         this.anoEvento,
         this.descricao,
@@ -38,7 +38,7 @@ class EventModel{
     String get description => 
       '${DateFormatter.simpleFormat(dataInicio)} à ${DateFormatter.simpleFormat(dataFim)}';
 
-    factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
+    factory EventoModel.fromJson(Map<String, dynamic> json) => EventoModel(
         nome: json["nome"] == null ? null : json["nome"],
         anoEvento: json["anoEvento"] == null ? null : DateTime.parse(json["anoEvento"]),
         descricao: json["descricao"] == null ? null : json["descricao"],
@@ -72,20 +72,20 @@ class EventModel{
         "id": id == null ? null : id,
     };
 
-    static List<EventModel> fromJsonList(List jsonList) =>
+    static List<EventoModel> fromJsonList(List jsonList) =>
     jsonList == null ? [] : jsonList.map(
-      (eventJson) => EventModel.fromJson(eventJson)).toList();
+      (eventJson) => EventoModel.fromJson(eventJson)).toList();
 }
 
-class ListEventModel extends APIResponse{
-  List<EventModel> events;
+class ListEventoModel extends APIResponse{
+  List<EventoModel> events;
 
-  ListEventModel({
+  ListEventoModel({
     statusCode,
     this.events
   }) : super(statusCode: statusCode);
 
-  factory ListEventModel.fromJson(List jsonList) => ListEventModel(
-    events: EventModel.fromJsonList(jsonList)
+  factory ListEventoModel.fromJson(List jsonList) => ListEventoModel(
+    events: EventoModel.fromJsonList(jsonList)
   );
 }

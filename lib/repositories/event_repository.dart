@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:pet_app/repositories/repository.dart';
 // Models
 import 'package:pet_app/models/api_response.dart';
-import 'package:pet_app/models/event.dart';
+import 'package:pet_app/models/evento.dart';
 
 class EventRepository extends Repository{
   
@@ -21,7 +21,7 @@ class EventRepository extends Repository{
       final body = json.decode(response?.body) ?? null;
 
       if (response.statusCode == 200) {
-        final result = ListEventModel.fromJson(body);
+        final result = ListEventoModel.fromJson(body);
         result.setStatusCode = response.statusCode;
         print('[Fetch Event from API]');
         return result;

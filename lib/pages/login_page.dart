@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // Bloc
 import 'package:pet_app/blocs/auth.dart';
-import 'package:pet_app/blocs/event.dart';
+import 'package:pet_app/blocs/evento.dart';
 // Pages
 import 'package:pet_app/pages/events_page.dart';
 // Utils
@@ -55,8 +55,8 @@ class LoginPage extends StatelessWidget {
           // );
           Navigator.of(context).pushAndRemoveUntil(
               SlideRoute(
-                  page: BlocProvider<EventBloc>(
-                    builder: (context) => BlocProvider.of<EventBloc>(context),
+                  page: BlocProvider<EventoBloc>(
+                    builder: (context) => BlocProvider.of<EventoBloc>(context),
                     child: EventsPage(),
                   ),
                   direction: SlideDirection.BOTTOM_TOP),

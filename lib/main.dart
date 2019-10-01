@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_app/blocs/auth.dart';
-import 'package:pet_app/blocs/event.dart';
+import 'package:pet_app/blocs/evento.dart';
 // Pages
 import 'package:pet_app/pages/login_page.dart';
 // Bloc 
@@ -31,15 +31,15 @@ class SimpleBlocDelegate extends BlocDelegate {
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final authBloc = AuthBloc()..dispatch(AuthAppStarted());
-  final eventBloc = EventBloc(authBloc: authBloc);
+  final EventoBloc eventoBloc = EventoBloc(authBloc: authBloc);
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
           builder: (context) => authBloc,
         ),
-        BlocProvider<EventBloc>(
-          builder: (context) => eventBloc,
+        BlocProvider<EventoBloc>(
+          builder: (context) => eventoBloc,
         )
       ],
       child: App()
