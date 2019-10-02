@@ -6,10 +6,13 @@ import 'package:pet_app/blocs/turma.dart';
 // Utils
 import 'package:pet_app/utils/snack_bar.dart';
 import 'package:pet_app/utils/style.dart';
+import 'package:pet_app/utils/slider.dart';
 // Model
 import 'package:pet_app/models/turma.dart';
 // Foreign
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+// Pages
+import 'package:pet_app/pages/scan_page.dart';
 
 class TurmasPage extends StatefulWidget{
 
@@ -22,6 +25,16 @@ class _TurmasPageState extends State<TurmasPage>{
     _bloc.dispatch(TurmaLoad(
       atividade: _bloc.currentAtividade
     ));
+  }
+
+  void _selectTurma(
+    TurmaModel turma,
+    BuildContext context
+  ) async {
+    // await Navigator.of(context).push(SlideRoute(
+      // page: ScanPage(),
+      // direction: SlideDirection.BOTTOM_TOP
+    // ));
   }
 
   @override
@@ -65,7 +78,7 @@ class _TurmasPageState extends State<TurmasPage>{
                     ),
                     subtitle: Text(_turmas[index].description),
                     trailing: Icon(Icons.keyboard_arrow_right),
-                    onTap: () => print('ok'),
+                    onTap: () => _selectTurma(_turmas[index], context),
                   ),
                 )
               ),

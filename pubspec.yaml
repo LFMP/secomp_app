@@ -26,6 +26,7 @@ dependencies:
   flushbar: any
   liquid_pull_to_refresh: any
   intl: any
+  qrcode_reader: ^0.4.4
   
 
   # The following adds the Cupertino Icons font to your application.
