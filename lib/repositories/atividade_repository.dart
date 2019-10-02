@@ -14,7 +14,7 @@ class AtividadeRepository extends Repository{
   static Future<APIResponse> fetchEvents(int eventoId, String token) async{
      try{
       final response = await http.get(
-        Repository.API_ATIVIDADES.replaceFirst('%', eventoId.toString()),
+        Repository.API_ATIVIDADES.replaceFirst('\$', eventoId.toString()),
         headers: {HttpHeaders.authorizationHeader: token},
       );
 

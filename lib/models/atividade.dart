@@ -1,4 +1,6 @@
+// Models
 import 'package:pet_app/models/api_response.dart';
+import 'package:pet_app/models/categoria.dart';
 
 class AtividadeModel {
   String nome;
@@ -10,7 +12,7 @@ class AtividadeModel {
   int cargaHoraria;
   int id;
   int eventoId;
-  int categoriaId;
+  CategoriaModel categoria;
 
   AtividadeModel({
     this.nome,
@@ -22,10 +24,10 @@ class AtividadeModel {
     this.cargaHoraria,
     this.id,
     this.eventoId,
-    this.categoriaId,
+    this.categoria,
   });
 
-  // String get description => ''
+  String get categoriaNome => categoria?.nome ?? '';
 
   factory AtividadeModel.fromJson(Map<String, dynamic> json) => AtividadeModel(
     nome: json["nome"] == null ? null : json["nome"],
@@ -39,7 +41,8 @@ class AtividadeModel {
     cargaHoraria: json["cargaHoraria"] == null ? null : json["cargaHoraria"],
     id: json["id"] == null ? null : json["id"],
     eventoId: json["eventoId"] == null ? null : json["eventoId"],
-    categoriaId: json["categoriaId"] == null ? null : json["categoriaId"],
+    categoria: json["categoria"] == null ? null :
+      CategoriaModel.fromJson(json["categoria"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -53,7 +56,7 @@ class AtividadeModel {
     "cargaHoraria": cargaHoraria == null ? null : cargaHoraria,
     "id": id == null ? null : id,
     "eventoId": eventoId == null ? null : eventoId,
-    "categoriaId": categoriaId == null ? null : categoriaId,
+    "categoria": categoria == null ? null : categoria.toJson(),
   };
 
   static List<AtividadeModel> fromJsonList(List jsonList) =>

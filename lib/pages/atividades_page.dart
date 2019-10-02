@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // Bloc
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/blocs/atividade.dart';
+import 'package:pet_app/models/atividade.dart';
 // Utils
 import 'package:pet_app/utils/snack_bar.dart';
 import 'package:pet_app/utils/style.dart';
@@ -18,13 +19,54 @@ class AtividadesPage extends StatefulWidget{
 
 class _AtividadesPageState extends State<AtividadesPage>{
 
+  final _searchController = TextEditingController();
+  Widget _appBarSearchTitle;
+  IconData _searchIcon;
+  String _searchQuery;
+  
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(() => setState((){
+      _searchQuery = _searchController.text;
+    }));
+    _searchIcon = Icons.search;
+    _appBarSearchTitle =  TextField(
+      controller: _searchController,
+      decoration: InputDecoration(
+        prefixIcon: Icon(
+          Icons.search,
+          color: AppStyle.colorWhite
+        ),
+        hintText: 'Search...',
+        hintStyle: TextStyle(
+          color: AppStyle.colorWhite
+        )
+      ),      
+      style: TextStyle(
+        color: AppStyle.colorWhite
+      ),
+    );
+    _searchQuery = '';
+  }
+
+  void _refreshSearch(String text){
+    setState((){
+      if (_searchIcon == Icons.search) {
+        _searchIcon = Icons.close;
+      } else {
+        this._searchIcon = Icons.search;
+        _searchController.clear();
+      }
+    });
+  }
+
   Future<void> _onRefresh(AtividadeBloc _bloc) async{
     _bloc.dispatch(AtividadeLoad(
       evento: _bloc.currentEvento
     ));
   }
 
-  
   @override
   Widget build(BuildContext context) {
     final AtividadeBloc _atividadeBloc = BlocProvider.of<AtividadeBloc>(context);
@@ -43,13 +85,26 @@ class _AtividadesPageState extends State<AtividadesPage>{
         bloc: _atividadeBloc,
         builder: (context, state){
 
-          final _atividades =
+          final List<AtividadeModel> _current =
             (state is AtividadeLoading || state is AtividadeEmpty) ?
             [] : state.atividades;
+
+          final List<AtividadeModel> _atividades = _searchQuery.isNotEmpty ?
+            _current.where((a) => 
+              a.nome.toLowerCase().contains(_searchQuery.toLowerCase())
+            ).toList() : _current;
           
           return Scaffold(
             appBar: AppBar(
-              title: Text('Atividades - ${state.evento?.nome ?? ""}'),
+              title: _searchIcon == Icons.search ?
+                Text('Atividades - ${state.evento?.nome ?? ""}') :
+                _appBarSearchTitle,
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(_searchIcon),
+                  onPressed: () => _refreshSearch(_searchController.text),
+                )
+              ],
             ),
             body: LiquidPullToRefresh(
               onRefresh: () => _onRefresh(_atividadeBloc),	
@@ -64,9 +119,7 @@ class _AtividadesPageState extends State<AtividadesPage>{
                       _atividades[index].nome,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    subtitle: Text(
-                      _atividades[index].descricao
-                    ),
+                    subtitle: Text(_atividades[index].categoriaNome),
                     trailing: Icon(Icons.keyboard_arrow_right),
                     onTap: () => print('ok'),
                   ),
