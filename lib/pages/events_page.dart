@@ -75,7 +75,9 @@ class _EventsPageState extends State<EventsPage>{
                 itemCount: _events.length,
                 itemBuilder: (context, index) => Card(
                   child: ListTile(
-                    leading: Image.memory(base64Decode(_events[index].foto.toString().substring(23))),
+                    leading: Image.memory(base64Decode(
+                      _events[index].foto.toString().substring(23)
+                    )),
                     title: Text(
                       _events[index].nome,
                       style: TextStyle(fontWeight: FontWeight.bold),
