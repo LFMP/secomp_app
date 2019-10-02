@@ -1,30 +1,33 @@
+import 'package:flutter/foundation.dart';
 // Exports
 export 'package:pet_app/blocs/events/evento.dart';
 export 'package:pet_app/blocs/states/evento.dart';
 // Bloc
 import 'package:bloc/bloc.dart';
+import 'package:pet_app/blocs/atividade.dart';
 import 'package:pet_app/blocs/auth.dart';
-import 'package:pet_app/blocs/events/evento.dart';
-import 'package:pet_app/blocs/states/evento.dart';
-import 'package:pet_app/models/api_response.dart';
+import 'package:pet_app/blocs/evento.dart';
 // Repository
 import 'package:pet_app/repositories/event_repository.dart';
 // Models
 import 'package:pet_app/models/evento.dart';
+import 'package:pet_app/models/api_response.dart';
 
 class EventoBloc extends Bloc<EventoEvent, EventoState>{
 
   final AuthBloc authBloc;
+  final AtividadeBloc atividadeBloc;
 
-  EventoBloc({this.authBloc});
+  EventoBloc({
+    @required this.authBloc,
+    @required this.atividadeBloc
+  });
 
   @override
   EventoState get initialState => EventoEmpty();
 
   List<EventoModel> get currentEvents => currentState.events;
   
-  // MapFilter get currentFilter => currentState.filter;
-
   @override
   Stream<EventoState> mapEventToState(EventoEvent event) async* {
 
@@ -41,31 +44,15 @@ class EventoBloc extends Bloc<EventoEvent, EventoState>{
 
     if (event is EventoRefresh){
       yield EventoLoading();
-      yield EventoLoaded(event.events);
+      yield EventoLoaded(currentEvents);
     }
 
-/*
-    if (event is EventFilter) {
-      yield EventoLoading();
-      try{
-        final mapEntities = await MapRepository.fetchEntities(
-          // municipioName
-          'alcantir',
-          event.filter.value
-        );
-        if (mapEntities == null){
-          final error = _DEF.STRING_FAIL_ENTITIES;
-          yield EventoLoadFailed(error: error);
-        }else yield EventoLoaded(
-          mapEntities,
-          event.filter
-        );
-      }catch (e){
-        print(e);
-        debugPrintStack();
-        yield EventoLoadFailed(error: e.toString());
-      }
+    if (event is EventoApply){
+      atividadeBloc.dispatch(AtividadeLoad(
+        evento: event.chosenEvento
+      ));
+      yield EventoLoaded(currentEvents);
     }
-*/
+    
   }
 }

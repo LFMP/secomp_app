@@ -6,9 +6,9 @@ import 'package:pet_app/blocs/evento.dart';
 // Pages
 import 'package:pet_app/pages/events_page.dart';
 // Utils
+import 'package:pet_app/utils/style.dart';
 import 'package:pet_app/utils/slider.dart';
 import 'package:pet_app/utils/snack_bar.dart';
-import 'package:pet_app/utils/style.dart';
 // Widgets
 import 'package:pet_app/widgets/commons/loading_widget.dart';
 // Models
@@ -99,9 +99,12 @@ class LoginPage extends StatelessWidget {
               child: ListView(
                 children: <Widget>[
                   SizedBox(
-                    width: 128,
-                    height: 128,
-                    child: Image.asset("assets/logoSecomp.png"),
+                    width: 180,
+                    height: 180,
+                    child: Image.asset(
+                      "assets/logoSecomp.png",
+                      color: AppStyle.colorWhite
+                    ),
                   ),
                   SizedBox(
                     height: 40,

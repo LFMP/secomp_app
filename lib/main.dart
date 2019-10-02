@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:pet_app/blocs/auth.dart';
-import 'package:pet_app/blocs/evento.dart';
 // Pages
 import 'package:pet_app/pages/login_page.dart';
+// Utils
+import 'package:pet_app/utils/style.dart';
 // Bloc 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pet_app/utils/style.dart';
+import 'package:pet_app/blocs/auth.dart';
+import 'package:pet_app/blocs/evento.dart';
+import 'package:pet_app/blocs/atividade.dart';
 
 class SimpleBlocDelegate extends BlocDelegate {
   @override
@@ -31,7 +33,12 @@ class SimpleBlocDelegate extends BlocDelegate {
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final authBloc = AuthBloc()..dispatch(AuthAppStarted());
-  final EventoBloc eventoBloc = EventoBloc(authBloc: authBloc);
+  final atividadeBloc = AtividadeBloc(authBloc: authBloc);
+  final eventoBloc = EventoBloc(
+    authBloc: authBloc,
+    atividadeBloc: atividadeBloc
+  );
+
   runApp(
     MultiBlocProvider(
       providers: [
@@ -40,6 +47,9 @@ void main() {
         ),
         BlocProvider<EventoBloc>(
           builder: (context) => eventoBloc,
+        ),
+        BlocProvider<AtividadeBloc>(
+          builder: (context) => atividadeBloc,
         )
       ],
       child: App()

@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 // Bloc
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/blocs/evento.dart';
-import 'package:pet_app/utils/snack_bar.dart';
 // Utils
+import 'package:pet_app/utils/snack_bar.dart';
 import 'package:pet_app/utils/style.dart';
+import 'package:pet_app/utils/slider.dart';
 // Model
 import 'package:pet_app/models/evento.dart';
 // Foreign
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+// Pages
+import 'package:pet_app/pages/atividades_page.dart';
 
 class EventsPage extends StatefulWidget{
 
@@ -23,13 +26,27 @@ class _EventsPageState extends State<EventsPage>{
     _bloc.dispatch(EventoLoad());    
   }
 
+  _selectEvento(
+    EventoModel evento,
+    EventoBloc _bloc,
+    BuildContext context,
+  ) async {
+    _bloc.dispatch(EventoApply(
+      chosenEvento: evento
+    ));
+     await Navigator.of(context).push(SlideRoute(
+      page: AtividadesPage(),
+      direction: SlideDirection.BOTTOM_TOP
+    ));
+  }
+
   
   @override
   Widget build(BuildContext context) {
-    final EventoBloc _EventoBloc = BlocProvider.of<EventoBloc>(context);
+    final EventoBloc _eventoBloc = BlocProvider.of<EventoBloc>(context);
 
     return BlocListener(
-      bloc: _EventoBloc,
+      bloc: _eventoBloc,
       listener: (context, state){
         if (state is EventoLoadFailed)
           SimpleSnackBar.showSnackBar(
@@ -38,10 +55,10 @@ class _EventsPageState extends State<EventsPage>{
           );
       },
       child: BlocBuilder(
-        bloc: _EventoBloc,
+        bloc: _eventoBloc,
         builder: (context, state){
           if (state is EventoEmpty)
-            _EventoBloc.dispatch(EventoLoad());
+            _eventoBloc.dispatch(EventoLoad());
 
           final _events = state is EventoLoading ? [] : state.events;
           
@@ -50,7 +67,7 @@ class _EventsPageState extends State<EventsPage>{
               title: Text('Eventos'),
             ),
             body: LiquidPullToRefresh(
-              onRefresh: () => _onRefresh(_EventoBloc),	
+              onRefresh: () => _onRefresh(_eventoBloc),	
               showChildOpacityTransition: false,
               height: AppStyle.pullHeight,
               color: AppStyle.colorBritishRacingGreen,
@@ -67,7 +84,11 @@ class _EventsPageState extends State<EventsPage>{
                       _events[index].description
                     ),
                     trailing: Icon(Icons.keyboard_arrow_right),
-                    onTap: () => print('ok'),
+                    onTap: () => _selectEvento(
+                      _events[index],
+                      _eventoBloc,
+                      context
+                    ),
                   ),
                 )
               ),

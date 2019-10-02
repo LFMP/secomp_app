@@ -1,0 +1,29 @@
+import 'package:equatable/equatable.dart';
+// Models
+import 'package:pet_app/models/atividade.dart';
+import 'package:pet_app/models/evento.dart';
+
+abstract class AtividadeEvent extends Equatable {
+  AtividadeEvent([List props = const []]) : super(props);
+}
+
+class AtividadeLoad extends AtividadeEvent {
+  final EventoModel evento;
+  AtividadeLoad({this.evento}) : super([evento]);
+  
+  @override
+  String toString() => 'AtividadeLoad';
+}
+
+class AtividadeRefresh extends AtividadeEvent{
+  final List<AtividadeModel> atividades;
+  final EventoModel evento;
+
+  AtividadeRefresh(
+    this.atividades,
+    this.evento
+  ) : super([atividades, evento]);
+  
+  @override
+  String toString() => 'AtividadeRefresh';
+}

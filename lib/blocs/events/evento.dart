@@ -23,12 +23,12 @@ class EventoRefresh extends EventoEvent{
   @override
   String toString() => 'EventoRefresh';
 }
-/*
-class EventFilter extends EventoEvent {
-  final MapFilter filter;
-  EventFilter({this.filter}) : super([filter]);
+
+class EventoApply extends EventoEvent {
+  final EventoModel chosenEvento;
+
+  EventoApply({this.chosenEvento}) : super([chosenEvento]);
   
   @override
-  String toString() => 'MapFilter';
+  String toString() => 'EventoApply';
 }
-*/
