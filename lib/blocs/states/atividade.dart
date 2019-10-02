@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+// Models
 import 'package:pet_app/models/api_response.dart';
 import 'package:pet_app/models/atividade.dart';
 import 'package:pet_app/models/evento.dart';

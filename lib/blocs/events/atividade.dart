@@ -27,3 +27,12 @@ class AtividadeRefresh extends AtividadeEvent{
   @override
   String toString() => 'AtividadeRefresh';
 }
+
+class AtividadeApply extends AtividadeEvent {
+  final AtividadeModel chosenAtividade;
+
+  AtividadeApply({this.chosenAtividade}) : super([chosenAtividade]);
+  
+  @override
+  String toString() => 'AtividadeApply';
+}

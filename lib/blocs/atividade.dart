@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 // Exports
 export 'package:pet_app/blocs/events/atividade.dart';
 export 'package:pet_app/blocs/states/atividade.dart';
@@ -6,18 +7,23 @@ import 'package:bloc/bloc.dart';
 import 'package:pet_app/blocs/auth.dart';
 import 'package:pet_app/blocs/events/atividade.dart';
 import 'package:pet_app/blocs/states/atividade.dart';
-import 'package:pet_app/models/api_response.dart';
-import 'package:pet_app/models/evento.dart';
+import 'package:pet_app/blocs/turma.dart';
 // Repository
 import 'package:pet_app/repositories/atividade_repository.dart';
 // Models
+import 'package:pet_app/models/evento.dart';
 import 'package:pet_app/models/atividade.dart';
+import 'package:pet_app/models/api_response.dart';
 
 class AtividadeBloc extends Bloc<AtividadeEvent, AtividadeState>{
 
   final AuthBloc authBloc;
+  final TurmaBloc turmaBloc;
 
-  AtividadeBloc({this.authBloc});
+  AtividadeBloc({
+    @required this.authBloc,
+    @required this.turmaBloc
+  });
 
   @override
   AtividadeState get initialState => AtividadeEmpty();
@@ -53,6 +59,16 @@ class AtividadeBloc extends Bloc<AtividadeEvent, AtividadeState>{
     if (event is AtividadeRefresh){
       yield AtividadeLoading(event.evento);
       yield AtividadeLoaded(event.atividades, event.evento);
+    }
+
+    if (event is AtividadeApply){
+      turmaBloc.dispatch(TurmaLoad(
+        atividade: event.chosenAtividade
+      ));
+      yield AtividadeLoaded(
+        currentAtividades,
+        currentEvento
+      );
     }
   }
 }

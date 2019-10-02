@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 // Bloc
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/blocs/atividade.dart';
-import 'package:pet_app/models/atividade.dart';
 // Utils
 import 'package:pet_app/utils/snack_bar.dart';
 import 'package:pet_app/utils/style.dart';
+import 'package:pet_app/utils/slider.dart';
 // Model
-import 'package:pet_app/models/evento.dart';
+import 'package:pet_app/models/atividade.dart';
 // Foreign
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+// Pages
+import 'package:pet_app/pages/turmas_page.dart';
 
 class AtividadesPage extends StatefulWidget{
 
@@ -64,6 +66,20 @@ class _AtividadesPageState extends State<AtividadesPage>{
   Future<void> _onRefresh(AtividadeBloc _bloc) async{
     _bloc.dispatch(AtividadeLoad(
       evento: _bloc.currentEvento
+    ));
+  }
+
+  _selectAtividade(
+    AtividadeModel atividade,
+    AtividadeBloc _bloc,
+    BuildContext context,
+  ) async {
+    _bloc.dispatch(AtividadeApply(
+      chosenAtividade: atividade
+    ));
+     await Navigator.of(context).push(SlideRoute(
+      page: TurmasPage(),
+      direction: SlideDirection.BOTTOM_TOP
     ));
   }
 
@@ -121,7 +137,11 @@ class _AtividadesPageState extends State<AtividadesPage>{
                     ),
                     subtitle: Text(_atividades[index].categoriaNome),
                     trailing: Icon(Icons.keyboard_arrow_right),
-                    onTap: () => print('ok'),
+                    onTap: () => _selectAtividade(
+                      _atividades[index],
+                      _atividadeBloc,
+                      context
+                    ),
                   ),
                 )
               ),

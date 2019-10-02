@@ -7,5 +7,6 @@ class Repository{
 
   static const API_EVENTOS = '$API_URL/Eventos';
   static const API_ATIVIDADES = '$API_EVENTOS/\$/Atividades?filter=%7B%22include%22%3A%22categoria%22%7D';
+  static const API_TURMAS = '$API_URL/Atividades/\$/Turmas';
 
 }

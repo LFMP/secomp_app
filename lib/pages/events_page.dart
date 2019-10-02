@@ -39,7 +39,6 @@ class _EventsPageState extends State<EventsPage>{
       direction: SlideDirection.BOTTOM_TOP
     ));
   }
-
   
   @override
   Widget build(BuildContext context) {

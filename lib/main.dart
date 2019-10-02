@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/blocs/auth.dart';
 import 'package:pet_app/blocs/evento.dart';
 import 'package:pet_app/blocs/atividade.dart';
+import 'package:pet_app/blocs/turma.dart';
 
 class SimpleBlocDelegate extends BlocDelegate {
   @override
@@ -33,7 +34,11 @@ class SimpleBlocDelegate extends BlocDelegate {
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final authBloc = AuthBloc()..dispatch(AuthAppStarted());
-  final atividadeBloc = AtividadeBloc(authBloc: authBloc);
+  final turmaBloc = TurmaBloc(authBloc: authBloc);
+  final atividadeBloc = AtividadeBloc(
+    authBloc: authBloc,
+    turmaBloc: turmaBloc
+  );
   final eventoBloc = EventoBloc(
     authBloc: authBloc,
     atividadeBloc: atividadeBloc
@@ -50,6 +55,9 @@ void main() {
         ),
         BlocProvider<AtividadeBloc>(
           builder: (context) => atividadeBloc,
+        ),
+        BlocProvider<TurmaBloc>(
+          builder: (context) => turmaBloc,
         )
       ],
       child: App()
