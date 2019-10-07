@@ -46,7 +46,10 @@ class _InscricoesPageState extends State<InscricoesPage>{
         .setHandlePermissions(true)
         .setExecuteAfterPermissionGranted(true)
         .scan()
-        .catchError((e) => null);
+        .catchError((e){
+          print(e);
+          return null;
+        });
 
     print(_barcodeString);
 
