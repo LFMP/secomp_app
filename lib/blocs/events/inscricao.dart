@@ -1,0 +1,39 @@
+import 'package:flutter/foundation.dart';
+// Foreign
+import 'package:equatable/equatable.dart';
+// Models
+import 'package:pet_app/models/turma.dart';
+import 'package:pet_app/models/atividade.dart';
+import 'package:pet_app/models/inscricao.dart';
+
+abstract class InscricaoEvent extends Equatable {
+  InscricaoEvent([List props = const []]) : super(props);
+}
+
+class InscricaoLoad extends InscricaoEvent {
+  final TurmaModel turma;
+  final AtividadeModel atividade;
+
+  InscricaoLoad({
+    @required this.turma,
+    @required this.atividade
+  }) : super([turma, atividade]);
+  
+  @override
+  String toString() => 'InscricaoLoad';
+}
+
+class InscricaoRefresh extends InscricaoEvent{
+  final List<InscricaoModel> inscricoes;
+  final TurmaModel turma;
+  final AtividadeModel atividade;
+
+  InscricaoRefresh(
+    @required this.inscricoes,
+    @required this.turma,
+    @required this.atividade
+  ) : super([inscricoes, atividade, turma]);
+  
+  @override
+  String toString() => 'InscricaoRefresh';
+}

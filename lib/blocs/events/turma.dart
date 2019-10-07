@@ -27,3 +27,12 @@ class TurmaRefresh extends TurmaEvent{
   @override
   String toString() => 'TurmaRefresh';
 }
+
+class TurmaApply extends TurmaEvent {
+  final TurmaModel chosenTurma;
+
+  TurmaApply({this.chosenTurma}) : super([chosenTurma]);
+  
+  @override
+  String toString() => 'TurmaApply';
+}

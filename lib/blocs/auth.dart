@@ -19,6 +19,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   String get token => currentState is AuthAuthenticated ? (currentState as AuthAuthenticated).response.token : '';
 
+  String get userId => currentState is AuthAuthenticated ? (currentState as AuthAuthenticated).response.userId : '';
+
   @override
   Stream<AuthState> mapEventToState(
     AuthEvent event,

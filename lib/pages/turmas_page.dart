@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 // Bloc
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +11,7 @@ import 'package:pet_app/models/turma.dart';
 // Foreign
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 // Pages
-import 'package:pet_app/pages/scan_page.dart';
+import 'package:pet_app/pages/inscricoes_page.dart';
 
 class TurmasPage extends StatefulWidget{
 
@@ -29,12 +28,16 @@ class _TurmasPageState extends State<TurmasPage>{
 
   void _selectTurma(
     TurmaModel turma,
+    TurmaBloc _bloc,
     BuildContext context
   ) async {
-    // await Navigator.of(context).push(SlideRoute(
-      // page: ScanPage(),
-      // direction: SlideDirection.BOTTOM_TOP
-    // ));
+    _bloc.dispatch(TurmaApply(
+      chosenTurma: turma
+    ));
+    await Navigator.of(context).push(SlideRoute(
+      page: InscricoesPage(),
+      direction: SlideDirection.BOTTOM_TOP
+    ));
   }
 
   @override
@@ -78,7 +81,11 @@ class _TurmasPageState extends State<TurmasPage>{
                     ),
                     subtitle: Text(_turmas[index].description),
                     trailing: Icon(Icons.keyboard_arrow_right),
-                    onTap: () => _selectTurma(_turmas[index], context),
+                    onTap: () => _selectTurma(
+                      _turmas[index],
+                      _turmaBloc,
+                      context
+                    ),
                   ),
                 )
               ),

@@ -4,17 +4,28 @@ import 'package:pet_app/models/api_response.dart';
 class TurmaModel {
   int quantidadeMaxInscritos;
   int quantidadeAtualInscritos;
+  int id;
   String nome;
   bool limited;
   int atividadeId;
+  List<DiaModel> dias;
+  DiaModel today;
 
   TurmaModel({
+    this.id,
     this.quantidadeMaxInscritos,
     this.quantidadeAtualInscritos,
     this.nome,
     this.limited,
     this.atividadeId,
-  });
+    this.dias
+  }){
+    final now = DateTime.now();
+    this.today = dias.firstWhere(
+      (day) => day.dia.difference(now).inDays == 0,
+      orElse: () => null
+    );
+  }
 
   String get description => 'Inscritos: $quantidadeAtualInscritos/$quantidadeMaxInscritos';
 
@@ -26,9 +37,12 @@ class TurmaModel {
     nome: json["nome"] == null ? null : json["nome"],
     limited: json["limited"] == null ? null : json["limited"],
     atividadeId: json["atividadeId"] == null ? null : json["atividadeId"],
+    dias: json['dias'] == null ? [] : DiaModel.fromJsonList(json['dias']),
+    id: json['id'] == null ? null : json['id']
   );
 
   Map<String, dynamic> toJson() => {
+    "id": id == null ? null : id,
     "quantidadeMaxInscritos": quantidadeMaxInscritos == null ? null :
       quantidadeMaxInscritos,
     "quantidadeAtualInscritos": quantidadeAtualInscritos == null ? null :
@@ -36,6 +50,8 @@ class TurmaModel {
     "nome": nome == null ? null : nome,
     "limited": limited == null ? null : limited,
     "atividadeId": atividadeId == null ? null : atividadeId,
+    "dias": dias == null || dias.isEmpty ? [] :
+      dias.map((dia) => dia.toJson()).toList()
   };
 
   static List<TurmaModel> fromJsonList(List jsonList) =>
@@ -54,4 +70,37 @@ class ListTurmaModel extends APIResponse{
   factory ListTurmaModel.fromJson(List jsonList) => ListTurmaModel(
     turmas: TurmaModel.fromJsonList(jsonList)
   );
+}
+
+class DiaModel {
+  int cargaHoraria;
+  DateTime dia;
+  int id;
+  int turmaId;
+
+  DiaModel({
+    this.cargaHoraria,
+    this.dia,
+    this.id,
+    this.turmaId,
+  });
+
+  factory DiaModel.fromJson(Map<String, dynamic> json) => DiaModel(
+    cargaHoraria: json["cargaHoraria"] == null ? null : json["cargaHoraria"],
+    dia: json["dia"] == null ? null : DateTime.parse(json["dia"]),
+    id: json["id"] == null ? null : json["id"],
+    turmaId: json["turmaId"] == null ? null : json["turmaId"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "cargaHoraria": cargaHoraria == null ? null : cargaHoraria,
+    "dia": dia == null ? null : dia.toIso8601String(),
+    "id": id == null ? null : id,
+    "turmaId": turmaId == null ? null :turmaId
+  };
+
+  static List<DiaModel> fromJsonList(List jsonList) =>
+    jsonList == null ? [] : jsonList.map(
+    (diaJson) => DiaModel.fromJson(diaJson)).toList();
+
 }
