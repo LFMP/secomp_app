@@ -7,6 +7,7 @@ import 'package:bloc/bloc.dart';
 import 'package:pet_app/blocs/auth.dart';
 import 'package:pet_app/blocs/events/inscricao.dart';
 import 'package:pet_app/blocs/states/inscricao.dart';
+import 'package:pet_app/blocs/presenca.dart';
 // Repository
 import 'package:pet_app/repositories/inscricao_repository.dart';
 // Models
@@ -18,9 +19,11 @@ import 'package:pet_app/models/api_response.dart';
 class InscricaoBloc extends Bloc<InscricaoEvent, InscricaoState>{
 
   final AuthBloc authBloc;
+  final PresencaBloc presencaBloc;
 
   InscricaoBloc({
     @required this.authBloc,
+    @required this.presencaBloc
   });
 
   @override
@@ -66,6 +69,16 @@ class InscricaoBloc extends Bloc<InscricaoEvent, InscricaoState>{
       );
       yield InscricaoLoaded(
         event.inscricoes, event.turma, event.atividade
+      );
+    }
+
+    if (event is InscricaoApply){
+      presencaBloc.dispatch(PresencaSet(
+        inscricao: event.chosenInscricao,
+        dia: currentTurma.today
+      ));
+      yield InscricaoLoaded(
+        currentInscricaos, currentTurma, currentAtividade
       );
     }
   }

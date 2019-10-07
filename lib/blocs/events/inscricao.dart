@@ -37,3 +37,12 @@ class InscricaoRefresh extends InscricaoEvent{
   @override
   String toString() => 'InscricaoRefresh';
 }
+
+class InscricaoApply extends InscricaoEvent {
+  final InscricaoModel chosenInscricao;
+
+  InscricaoApply({this.chosenInscricao}) : super([chosenInscricao]);
+  
+  @override
+  String toString() => 'InscricaoApply';
+}

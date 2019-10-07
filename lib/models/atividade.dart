@@ -29,7 +29,7 @@ class AtividadeModel {
 
   String get categoriaNome => categoria?.nome ?? '';
 
-  factory AtividadeModel.fromJson(Map<String, dynamic> json) => AtividadeModel(
+  factory AtividadeModel.fromJson(Map<String, dynamic> json) => json == null ? null : AtividadeModel(
     nome: json["nome"] == null ? null : json["nome"],
     anoAtividade: json["anoAtividade"] == null ? null : DateTime.parse(
       json["anoAtividade"]),
@@ -72,7 +72,7 @@ class ListAtividadeModel extends APIResponse{
     this.atividades
   }) : super(statusCode: statusCode);
 
-  factory ListAtividadeModel.fromJson(List jsonList) => ListAtividadeModel(
-    atividades: AtividadeModel.fromJsonList(jsonList)
-  );
+  factory ListAtividadeModel.fromJson(List jsonList) => jsonList == null ?  
+    ListAtividadeModel() :
+    ListAtividadeModel(atividades: AtividadeModel.fromJsonList(jsonList));
 }

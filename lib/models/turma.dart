@@ -22,14 +22,14 @@ class TurmaModel {
   }){
     final now = DateTime.now();
     this.today = dias.firstWhere(
-      (day) => day.dia.difference(now).inDays == 0,
+      (day) => day.dia.difference(now).inDays == 0 && day.dia.day == now.day,
       orElse: () => null
     );
   }
 
   String get description => 'Inscritos: $quantidadeAtualInscritos/$quantidadeMaxInscritos';
 
-  factory TurmaModel.fromJson(Map<String, dynamic> json) => TurmaModel(
+  factory TurmaModel.fromJson(Map<String, dynamic> json) => json == null ? null : TurmaModel(
     quantidadeMaxInscritos: json["quantidadeMaxInscritos"] == null ? null :
       json["quantidadeMaxInscritos"],
     quantidadeAtualInscritos: json["quantidadeAtualInscritos"] == null ?
@@ -67,9 +67,9 @@ class ListTurmaModel extends APIResponse{
   this.turmas
   }) : super(statusCode: statusCode);
 
-  factory ListTurmaModel.fromJson(List jsonList) => ListTurmaModel(
-    turmas: TurmaModel.fromJsonList(jsonList)
-  );
+  factory ListTurmaModel.fromJson(List jsonList) => jsonList == null ?
+  ListTurmaModel() :
+  ListTurmaModel(turmas: TurmaModel.fromJsonList(jsonList));
 }
 
 class DiaModel {
@@ -85,7 +85,7 @@ class DiaModel {
     this.turmaId,
   });
 
-  factory DiaModel.fromJson(Map<String, dynamic> json) => DiaModel(
+  factory DiaModel.fromJson(Map<String, dynamic> json) => json == null ? null : DiaModel(
     cargaHoraria: json["cargaHoraria"] == null ? null : json["cargaHoraria"],
     dia: json["dia"] == null ? null : DateTime.parse(json["dia"]),
     id: json["id"] == null ? null : json["id"],

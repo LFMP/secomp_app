@@ -38,7 +38,7 @@ class EventoModel{
     String get description => 
       '${DateFormatter.simpleFormat(dataInicio)} à ${DateFormatter.simpleFormat(dataFim)}';
 
-    factory EventoModel.fromJson(Map<String, dynamic> json) => EventoModel(
+    factory EventoModel.fromJson(Map<String, dynamic> json) => json == null ? null : EventoModel(
         nome: json["nome"] == null ? null : json["nome"],
         anoEvento: json["anoEvento"] == null ? null : DateTime.parse(json["anoEvento"]),
         descricao: json["descricao"] == null ? null : json["descricao"],
@@ -85,7 +85,7 @@ class ListEventoModel extends APIResponse{
     this.events
   }) : super(statusCode: statusCode);
 
-  factory ListEventoModel.fromJson(List jsonList) => ListEventoModel(
-    events: EventoModel.fromJsonList(jsonList)
-  );
+  factory ListEventoModel.fromJson(List jsonList) => jsonList == null ?
+    ListEventoModel() :
+    ListEventoModel(events: EventoModel.fromJsonList(jsonList));
 }

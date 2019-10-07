@@ -28,11 +28,8 @@ class LoginPage extends StatelessWidget {
     void _sendLogin() => _authBloc.dispatch(
       AuthLogin(
         request: AuthRequest(
-          username: 'petMaster'
-          //_userController.text
-          ,
-          password: 'teste'
-          // _passController.text
+          username: _userController.text,
+          password: _passController.text
         )
       )
     );
@@ -47,12 +44,7 @@ class LoginPage extends StatelessWidget {
           );
         }
 
-        if (state is AuthAuthenticated) {
-          // SimpleSnackBar.showSnackBar(
-          //   context,
-          //   state.response.token,
-          //   color: Colors.green
-          // );
+        if (state is AuthAuthenticated) {        
           Navigator.of(context).pushAndRemoveUntil(
               SlideRoute(
                   page: BlocProvider<EventoBloc>(

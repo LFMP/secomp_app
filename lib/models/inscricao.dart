@@ -27,7 +27,7 @@ class InscricaoModel {
 
   String get description => '$cpf / ${pago ? '' : 'Não '}Pago';
 
-  factory InscricaoModel.fromJson(Map<String, dynamic> json) => InscricaoModel(
+  factory InscricaoModel.fromJson(Map<String, dynamic> json) => json == null ? null : InscricaoModel(
     pago: json["pago"] == null ? null : json["pago"],
     cargaHoraria: json["cargaHoraria"] == null ? null : json["cargaHoraria"],
     id: json["id"] == null ? null : json["id"],
@@ -66,7 +66,7 @@ class InscritoModel {
     this.usuario,
   });
 
-  factory InscritoModel.fromJson(Map<String, dynamic> json) => InscritoModel(
+  factory InscritoModel.fromJson(Map<String, dynamic> json) => json == null ? null : InscritoModel(
     id: json["id"] == null ? null : json["id"],
     usuarioId: json["usuarioId"] == null ? null : json["usuarioId"],
     usuario: json["usuario"] == null ? null : 
@@ -93,7 +93,7 @@ class UsuarioModel {
     this.id,
   });
 
-  factory UsuarioModel.fromJson(Map<String, dynamic> json) => UsuarioModel(
+  factory UsuarioModel.fromJson(Map<String, dynamic> json) => json == null ? null : UsuarioModel(
     nome: json["nome"] == null ? null : json["nome"],
     email: json["email"] == null ? null : json["email"],
     cpf: json["cpf"] == null ? null : json["cpf"],
@@ -117,7 +117,7 @@ class ListInscricaoModel extends APIResponse{
   this.inscricoes
   }) : super(statusCode: statusCode);
 
-  factory ListInscricaoModel.fromJson(List jsonList) => ListInscricaoModel(
-    inscricoes: InscricaoModel.fromJsonList(jsonList)
-  );
+  factory ListInscricaoModel.fromJson(List jsonList) => jsonList == null ? 
+  ListInscricaoModel() :
+  ListInscricaoModel(inscricoes: InscricaoModel.fromJsonList(jsonList));
 }

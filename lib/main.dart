@@ -11,6 +11,7 @@ import 'package:pet_app/blocs/evento.dart';
 import 'package:pet_app/blocs/atividade.dart';
 import 'package:pet_app/blocs/turma.dart';
 import 'package:pet_app/blocs/inscricao.dart';
+import 'package:pet_app/blocs/presenca.dart';
 
 class SimpleBlocDelegate extends BlocDelegate {
   @override
@@ -35,7 +36,11 @@ class SimpleBlocDelegate extends BlocDelegate {
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final authBloc = AuthBloc()..dispatch(AuthAppStarted());
-  final inscricaoBloc = InscricaoBloc(authBloc: authBloc);
+  final presencaBloc = PresencaBloc(authBloc: authBloc);
+  final inscricaoBloc = InscricaoBloc(
+    authBloc: authBloc,
+    presencaBloc: presencaBloc
+  );
   final turmaBloc = TurmaBloc(
     authBloc: authBloc,
     inscricaoBloc: inscricaoBloc
@@ -66,6 +71,9 @@ void main() {
         ),
         BlocProvider<InscricaoBloc>(
           builder: (context) => inscricaoBloc,
+        ),
+        BlocProvider<PresencaBloc>(
+          builder: (context) => presencaBloc,
         )
       ],
       child: App()

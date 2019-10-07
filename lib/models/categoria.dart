@@ -7,7 +7,7 @@ class CategoriaModel {
     this.id,
   });
 
-  factory CategoriaModel.fromJson(Map<String, dynamic> json) => CategoriaModel(
+  factory CategoriaModel.fromJson(Map<String, dynamic> json) => json == null ? null : CategoriaModel(
     nome: json["nome"] == null ? null : json["nome"],
     id: json["id"] == null ? null : json["id"],
   );

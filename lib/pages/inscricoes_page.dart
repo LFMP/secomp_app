@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // Bloc
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_app/blocs/inscricao.dart';
+import 'package:pet_app/blocs/presenca.dart';
 // Utils
 import 'package:pet_app/utils/snack_bar.dart';
 import 'package:pet_app/utils/style.dart';
@@ -34,31 +35,79 @@ class _InscricoesPageState extends State<InscricoesPage>{
     print(inscricao.inscrito.usuario.nome);
   }
 
-  void _toScanPage() async {
-    final String _barcodeString = await _qrReader
-      .setAutoFocusIntervalInMs(200)
-      .setForceAutoFocus(true)
-      .setTorchEnabled(true)
-      .setHandlePermissions(true)
-      .setExecuteAfterPermissionGranted(true)
-      .scan();
+  void _toScanPage(
+    BuildContext context,
+    InscricaoBloc _bloc
+  ) async {
+    String _barcodeString = await _qrReader
+        .setAutoFocusIntervalInMs(200)
+        .setForceAutoFocus(true)
+        .setTorchEnabled(true)
+        .setHandlePermissions(true)
+        .setExecuteAfterPermissionGranted(true)
+        .scan()
+        .catchError((e) => null);
+
     print(_barcodeString);
+
+    if (_barcodeString == null){
+      SimpleSnackBar.showSnackBar(
+        context,
+        'QRCode não encontrado'
+      );
+      return;
+    }
+
+    final inscricao = _bloc.currentInscricaos.firstWhere(
+      (i) => i.usuarioId == _barcodeString,
+      orElse: () => null
+    );
+
+    if (inscricao != null)
+      _bloc.dispatch(
+        InscricaoApply(
+          chosenInscricao: inscricao
+        )
+      );
+    else
+      SimpleSnackBar.showSnackBar(
+        context,
+        'Inscrito não pertence a esta turma!'
+      );
   }
 
   @override
   Widget build(BuildContext context) {
     final InscricaoBloc _inscricaoBloc = BlocProvider.of<InscricaoBloc>(context);
 
-    return BlocListener(
-      bloc: _inscricaoBloc,
-      listener: (context, state){
-        if (state is InscricaoLoadFailed)
-          SimpleSnackBar.showSnackBar(
-            context,
-            state.error.message
-          );
-      
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<InscricaoBloc, InscricaoState>(
+          listener: (context, state){
+            if (state is InscricaoLoadFailed)
+              SimpleSnackBar.showSnackBar(
+                context,
+                state.error.message
+              );
+          },
+        ),
+        BlocListener<PresencaBloc, PresencaState>(
+          listener: (context, state){
+            if (state is PresencaSetSucessfull)
+              SimpleSnackBar.showSnackBar(
+                context,
+                '${state.inscricao.nome} recebeu presença!',
+                color: AppStyle.colorPigmentGreen
+              );
+
+            if (state is PresencaSetFailed)
+              SimpleSnackBar.showSnackBar(
+                context,
+                state.error?.message ?? 'Generic error'
+              );
+          },
+        ),
+      ],
       child: BlocBuilder(
         bloc: _inscricaoBloc,
         builder: (context, state){
@@ -72,7 +121,7 @@ class _InscricoesPageState extends State<InscricoesPage>{
               title: Text('Inscricoes - ${state.turma?.nome ?? ""} | ${state.atividade?.nome ?? ""}'),
             ),
             floatingActionButton: FloatingActionButton(
-              onPressed: () => _toScanPage(),
+              onPressed: () => _toScanPage(context, _inscricaoBloc),
               backgroundColor: AppStyle.colorBritishRacingGreen,
               splashColor: AppStyle.colorPigmentGreen,
               child: Icon(Icons.camera_alt),

@@ -33,10 +33,12 @@ class AuthResponse extends APIResponse{
     this.userId,
   }) : super(statusCode: statusCode);
     
-  factory AuthResponse.fromJson(Map<String, dynamic> json) => AuthResponse(
-    token: json["id"] == null ? null : json["id"],
-    userId: json["userId"] == null ? null : json["userId"],
-  );
+  factory AuthResponse.fromJson(Map<String, dynamic> json) => json == null ?  
+    AuthResponse() :
+    AuthResponse(
+      token: json["id"] == null ? null : json["id"],
+      userId: json["userId"] == null ? null : json["userId"],
+    );
 
   Map<String, dynamic> toJson() => {
     "id": token == null ? null : token,
