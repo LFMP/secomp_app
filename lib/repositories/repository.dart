@@ -1,14 +1,21 @@
+<<<<<<< HEAD
 class Repository{
 
   static const API_URL = 'http://10.253.48.153:3001/pet/api';
+=======
+class Repository {
+  static const API_URL = 'https://www.din.uem.br/pet/api';
+>>>>>>> e84c949deaa1557aec5bfd60a26d55c75d04dbd9
 
   static const API_USUARIOS = '$API_URL/Usuarios';
   static const API_USUARIOS_LOGIN = '$API_USUARIOS/login';
 
   static const API_PRESENCA = '$API_URL/Presencas';
   static const API_EVENTOS = '$API_URL/Eventos';
-  static const API_ATIVIDADES = '$API_EVENTOS/\$/Atividades?filter={"include":"categoria"}';
-  static const API_TURMAS = '$API_URL/Atividades/\$/Turmas?filter={"include":"dias"}';
-  static const API_INSCRICOES = '$API_URL/Inscricoes?filter={"where":{"and":[{"turmaId": \$},{"atividadeId":\$}]}}';
-
+  static const API_ATIVIDADES =
+      '$API_EVENTOS/\$/Atividades?filter={"include":"categoria"}';
+  static const API_TURMAS =
+      '$API_URL/Atividades/\$/Turmas?filter={"include":"dias"}';
+  static const API_INSCRICOES =
+      '$API_URL/Inscricoes?filter={"where":{"and":[{"turmaId": \$},{"atividadeId":\$}]}}';
 }
