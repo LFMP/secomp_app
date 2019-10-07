@@ -1,11 +1,6 @@
-<<<<<<< HEAD
 class Repository{
 
   static const API_URL = 'http://10.253.48.153:3001/pet/api';
-=======
-class Repository {
-  static const API_URL = 'https://www.din.uem.br/pet/api';
->>>>>>> e84c949deaa1557aec5bfd60a26d55c75d04dbd9
 
   static const API_USUARIOS = '$API_URL/Usuarios';
   static const API_USUARIOS_LOGIN = '$API_USUARIOS/login';
