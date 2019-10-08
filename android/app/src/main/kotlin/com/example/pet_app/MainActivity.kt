@@ -1,4 +1,4 @@
-package com.example.pet_app
+package com.pet_ej.secomp
 
 import android.os.Bundle
 
