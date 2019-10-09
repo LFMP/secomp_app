@@ -36,9 +36,11 @@ class PresencaBloc extends Bloc<PresencaEvent, PresencaState>{
       final _currentInscricao =  event.inscricao;
       yield PresencaLoading(_currentInscricao);
 
+      final _currentDia = event.dia;
+
       final presenca = PresencaModel(
         inscricaoId: _currentInscricao.id,
-        diaId: event.dia.id,
+        diaId: _currentDia?.id ?? -1,
         dataPresenca: DateTime.now(),
         responsavelPresencaId: authBloc.userId
       );

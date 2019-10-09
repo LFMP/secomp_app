@@ -28,8 +28,10 @@ class LoginPage extends StatelessWidget {
     void _sendLogin() => _authBloc.dispatch(
       AuthLogin(
         request: AuthRequest(
-          username: _userController.text,
-          password: _passController.text
+          username: 
+          _userController.text,
+          password:
+           _passController.text
         )
       )
     );

@@ -64,11 +64,17 @@ class _InscricoesPageState extends State<InscricoesPage>{
     );
 
     if (inscricao != null)
-      _bloc.dispatch(
-        InscricaoApply(
-          chosenInscricao: inscricao
-        )
-      );
+      if (_bloc.currentTurma.today == null)
+        SimpleSnackBar.showSnackBar(
+          context,
+          'Não há turma em atividade hoje!'
+        );
+      else
+        _bloc.dispatch(
+          InscricaoApply(
+            chosenInscricao: inscricao
+          )
+        );
     else
       SimpleSnackBar.showSnackBar(
         context,
