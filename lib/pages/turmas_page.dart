@@ -74,7 +74,7 @@ class _TurmasPageState extends State<TurmasPage> {
                     onTap: () => _authBloc.realm == "Petiano" ||
                             _authBloc.realm == "Ajudante"
                         ? _selectTurma(_turmas[index], _turmaBloc, context)
-                        : print(_authBloc.realm),
+                        : null,
                   ),
                 ),
               ),

@@ -9,18 +9,17 @@ import 'package:pet_app/repositories/repository.dart';
 import 'package:pet_app/models/api_response.dart';
 import 'package:pet_app/models/inscricao.dart';
 
-class InscricaoRepository extends Repository{
-  
+class InscricaoRepository extends Repository {
   static Future<APIResponse> fetchEvents({
     @required int atividadeId,
     @required int turmaId,
-    @required String token
-  }) async{
-     try{
+    @required String token,
+  }) async {
+    try {
       final response = await http.get(
         Repository.API_INSCRICOES
-        .replaceFirst('\$', turmaId.toString())
-        .replaceFirst('\$', atividadeId.toString()),
+            .replaceFirst('\$', turmaId.toString())
+            .replaceFirst('\$', atividadeId.toString()),
         headers: {HttpHeaders.authorizationHeader: token},
       );
 
@@ -31,15 +30,14 @@ class InscricaoRepository extends Repository{
         result.setStatusCode = response.statusCode;
         print('[Fetch Inscricao from API]');
         return result;
-      }else{
+      } else {
         print('[Fetch Inscricao Failed]');
         return APIError.fromJson(body);
       }
-    }catch(e){
+    } catch (e) {
       print(e);
       debugPrintStack();
-      return APIError(message: e.toString());      
+      return APIError(message: e.toString());
     }
   }
-
 }
