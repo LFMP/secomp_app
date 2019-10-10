@@ -35,7 +35,7 @@ class AuthResponse extends APIResponse {
       : AuthResponse(
           token: json["id"] == null ? null : json["id"],
           userId: json["userId"] == null ? null : json["userId"],
-          realm: json["realm"] == null ? null : json["realm"],
+          realm: json["user"]["realm"] == null ? null : json["user"]["realm"],
         );
 
   Map<String, dynamic> toJson() => {

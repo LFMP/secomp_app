@@ -2,9 +2,8 @@ class Repository {
   static const API_URL = 'https://secompuem.com/pet/api';
 
   static const API_USUARIOS = '$API_URL/Usuarios';
-  static const API_USUARIOS_LOGIN = '$API_USUARIOS/login';
-  static const API_USUARIO_REALM =
-      '$API_USUARIOS/\$?filter={"fields":{"realm":true}}';
+  static const API_USUARIOS_LOGIN =
+      '$API_USUARIOS/login/?include=user';
 
   static const API_PRESENCA = '$API_URL/Presencas';
   static const API_EVENTOS = '$API_URL/Eventos';

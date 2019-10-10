@@ -68,15 +68,13 @@ class _TurmasPageState extends State<TurmasPage> {
                     ),
                     subtitle: Text(_turmas[index].description),
                     trailing: _authBloc.realm == "Petiano" ||
-                            _authBloc.realm == "Ajudante" ||
-                            _authBloc.realm == "Admin"
+                            _authBloc.realm == "Ajudante"
                         ? Icon(Icons.keyboard_arrow_right)
                         : null,
                     onTap: () => _authBloc.realm == "Petiano" ||
-                            _authBloc.realm == "Ajudante" ||
-                            _authBloc.realm == "Admin"
+                            _authBloc.realm == "Ajudante"
                         ? _selectTurma(_turmas[index], _turmaBloc, context)
-                        : null,
+                        : print(_authBloc.realm),
                   ),
                 ),
               ),
