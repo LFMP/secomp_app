@@ -11,23 +11,28 @@ import 'package:pet_app/models/authorization.dart';
 import 'package:pet_app/repositories/auth_repository.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-
   AuthBloc();
 
   @override
   AuthState get initialState => AuthUninitialized();
 
-  String get token => currentState is AuthAuthenticated ? (currentState as AuthAuthenticated).response.token : '';
+  String get token => currentState is AuthAuthenticated
+      ? (currentState as AuthAuthenticated).response.token
+      : '';
 
-  String get userId => currentState is AuthAuthenticated ? (currentState as AuthAuthenticated).response.userId : '';
+  String get userId => currentState is AuthAuthenticated
+      ? (currentState as AuthAuthenticated).response.userId
+      : '';
+
+  String get realm => currentState is AuthAuthenticated
+      ? (currentState as AuthAuthenticated).response.realm
+      : '';
 
   @override
   Stream<AuthState> mapEventToState(
     AuthEvent event,
   ) async* {
-
     if (event is AuthAppStarted) {
-
       // TODO: Check if haas token saved
       yield AuthUninitialized();
 

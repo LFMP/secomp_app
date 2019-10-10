@@ -25,7 +25,7 @@ class InscricaoModel {
   String get cpf => inscrito?.usuario?.cpf ?? '';
   String get userId => inscrito?.usuario?.id ?? null;
 
-  String get description => '$cpf / ${pago ? '' : 'Não '}Pago';
+  String get description => '$cpf / ${pago ? 'Pago' : 'Não pago'}';
 
   factory InscricaoModel.fromJson(Map<String, dynamic> json) => json == null ? null : InscricaoModel(
     pago: json["pago"] == null ? null : json["pago"],
