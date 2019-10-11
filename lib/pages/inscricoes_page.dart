@@ -36,10 +36,10 @@ class _InscricoesPageState extends State<InscricoesPage> {
         .setHandlePermissions(true)
         .setExecuteAfterPermissionGranted(true)
         .scan()
-        .catchError((e){
-          print(e);
-          return null;
-        });
+        .catchError((e) {
+      print(e);
+      return null;
+    });
 
     print(_barcodeString);
 
@@ -51,18 +51,10 @@ class _InscricoesPageState extends State<InscricoesPage> {
     final inscricao = _bloc.currentInscricaos
         .firstWhere((i) => i.usuarioId == _barcodeString, orElse: () => null);
 
-    if (inscricao != null)
-      if (_bloc.currentTurma.today == null)
-        SimpleSnackBar.showSnackBar(
-          context,
-          'Não há turma em atividade hoje!'
-        );
-      else
-        _bloc.dispatch(
-          InscricaoApply(
-            chosenInscricao: inscricao
-          )
-        );
+    if (inscricao != null) if (_bloc.currentTurma.today == null)
+      SimpleSnackBar.showSnackBar(context, 'Não há turma em atividade hoje!');
+    else
+      _bloc.dispatch(InscricaoApply(chosenInscricao: inscricao));
     else
       SimpleSnackBar.showSnackBar(
           context, 'Inscrito não pertence a esta turma!');
@@ -122,6 +114,10 @@ class _InscricoesPageState extends State<InscricoesPage> {
                       itemCount: _inscricoes.length,
                       itemBuilder: (context, index) => Card(
                             child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: AppStyle.colorPigmentGreen,
+                                child: Text(index.toString()),
+                              ),
                               title: Text(
                                 _inscricoes[index].nome,
                                 style: TextStyle(fontWeight: FontWeight.bold),
