@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 // Bloc
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:pet_app/blocs/inscricao.dart';
 import 'package:pet_app/blocs/presenca.dart';
 // Utils
@@ -26,6 +29,30 @@ class _InscricoesPageState extends State<InscricoesPage> {
 
   void _selectInscricao(InscricaoModel inscricao, BuildContext context) async {
     print(inscricao.inscrito.usuario.id);
+  }
+
+  Future<void> _sortInscrito(
+    BuildContext context,
+    List<InscricaoModel> inscritos,
+  ) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Sorteado"),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          content: Text(inscritos[new Random().nextInt(inscritos.length)].nome),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("OK"),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _toScanPage(BuildContext context, InscricaoBloc _bloc) async {
@@ -66,70 +93,88 @@ class _InscricoesPageState extends State<InscricoesPage> {
         BlocProvider.of<InscricaoBloc>(context);
 
     return MultiBlocListener(
-        listeners: [
-          BlocListener<InscricaoBloc, InscricaoState>(
-            listener: (context, state) {
-              if (state is InscricaoLoadFailed)
-                SimpleSnackBar.showSnackBar(context, state.error.message);
-            },
-          ),
-          BlocListener<PresencaBloc, PresencaState>(
-            listener: (context, state) {
-              if (state is PresencaSetSucessfull)
-                SimpleSnackBar.showSnackBar(
-                    context, '${state.inscricao.nome} recebeu presença!',
-                    color: AppStyle.colorPigmentGreen);
-
-              if (state is PresencaSetFailed)
-                SimpleSnackBar.showSnackBar(
-                    context, state.error?.message ?? 'Generic error');
-            },
-          ),
-        ],
-        child: BlocBuilder(
-          bloc: _inscricaoBloc,
-          builder: (context, state) {
-            final List<InscricaoModel> _inscricoes =
-                (state is InscricaoLoading || state is InscricaoEmpty)
-                    ? []
-                    : state.inscricoes;
-
-            return Scaffold(
-                appBar: AppBar(
-                  title: Text(
-                      'Inscrições - ${state.turma?.nome ?? ""} | ${state.atividade?.nome ?? ""}'),
-                ),
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () => _toScanPage(context, _inscricaoBloc),
-                  backgroundColor: AppStyle.colorBritishRacingGreen,
-                  splashColor: AppStyle.colorPigmentGreen,
-                  child: Icon(Icons.camera_alt),
-                ),
-                body: LiquidPullToRefresh(
-                  onRefresh: () => _onRefresh(_inscricaoBloc),
-                  showChildOpacityTransition: false,
-                  height: AppStyle.pullHeight,
-                  color: AppStyle.colorBritishRacingGreen,
-                  child: ListView.builder(
-                      itemCount: _inscricoes.length,
-                      itemBuilder: (context, index) => Card(
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor: AppStyle.colorPigmentGreen,
-                                child: Text(index.toString()),
-                              ),
-                              title: Text(
-                                _inscricoes[index].nome,
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              subtitle: Text(_inscricoes[index].description),
-                              trailing: Icon(Icons.keyboard_arrow_right),
-                              onTap: () =>
-                                  _selectInscricao(_inscricoes[index], context),
-                            ),
-                          )),
-                ));
+      listeners: [
+        BlocListener<InscricaoBloc, InscricaoState>(
+          listener: (context, state) {
+            if (state is InscricaoLoadFailed)
+              SimpleSnackBar.showSnackBar(context, state.error.message);
           },
-        ));
+        ),
+        BlocListener<PresencaBloc, PresencaState>(
+          listener: (context, state) {
+            if (state is PresencaSetSucessfull)
+              SimpleSnackBar.showSnackBar(
+                  context, '${state.inscricao.nome} recebeu presença!',
+                  color: AppStyle.colorPigmentGreen);
+
+            if (state is PresencaSetFailed)
+              SimpleSnackBar.showSnackBar(
+                  context, state.error?.message ?? 'Generic error');
+          },
+        ),
+      ],
+      child: BlocBuilder(
+        bloc: _inscricaoBloc,
+        builder: (context, state) {
+          final List<InscricaoModel> _inscricoes =
+              (state is InscricaoLoading || state is InscricaoEmpty)
+                  ? []
+                  : state.inscricoes;
+
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'Inscrições - ${state.turma?.nome ?? ""} | ${state.atividade?.nome ?? ""}',
+              ),
+            ),
+            floatingActionButton: SpeedDial(
+              backgroundColor: AppStyle.colorBritishRacingGreen,
+              animatedIcon: AnimatedIcons.menu_close,
+              animatedIconTheme: IconThemeData(size: 22.0),
+              closeManually: false,
+              elevation: 8.0,
+              shape: CircleBorder(),
+              children: [
+                SpeedDialChild(
+                  child: Icon(Icons.camera_alt),
+                  backgroundColor: AppStyle.colorBritishRacingGreen,
+                  onTap: () => _toScanPage(context, _inscricaoBloc),
+                  label: 'Ler QRCode',
+                ),
+                SpeedDialChild(
+                  child: Icon(Icons.sort),
+                  backgroundColor: AppStyle.colorBritishRacingGreen,
+                  onTap: () => _sortInscrito(context, _inscricoes),
+                  label: 'Sortear',
+                ),
+              ],
+            ),
+            body: LiquidPullToRefresh(
+              onRefresh: () => _onRefresh(_inscricaoBloc),
+              showChildOpacityTransition: false,
+              height: AppStyle.pullHeight,
+              color: AppStyle.colorBritishRacingGreen,
+              child: ListView.builder(
+                itemCount: _inscricoes.length,
+                itemBuilder: (context, index) => Card(
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: AppStyle.colorPigmentGreen,
+                      child: Text(index.toString()),
+                    ),
+                    title: Text(
+                      _inscricoes[index].nome,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(_inscricoes[index].description),
+                    onTap: () => _selectInscricao(_inscricoes[index], context),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }
